@@ -23,15 +23,15 @@
     @cell-mouse-leave="handleMouseOut"
     style="width: 100%">
       <el-table-column type="index" label="#"></el-table-column>
-    <el-table-column label="日期">
+    <el-table-column label="项目名称">
       <template scope="scope">
-      <span v-if="!scope.row.editeFlag">{{ scope.row.name }}</span>
-      <span v-if="scope.row.editeFlag" class="cell-edit-input"><el-input v-model="scope.row.name" placeholder="请输入内容"></el-input></span>
+      <span v-if="!scope.row.editeFlag">{{ scope.row.Name }}</span>
+      <span v-if="scope.row.editeFlag" class="cell-edit-input"><el-input v-model="scope.row.Name" placeholder="请输入内容"></el-input></span>
       <span v-if="!scope.row.editeFlag" style="margin-left:10px;" class="cell-icon"  @click="handleEdit(scope.$index,scope.row)">  <i class="el-icon-edit"></i> </span>
       <span v-if="scope.row.editeFlag"  style="margin-left:10px;"  class="cell-icon"  @click="handleSave(scope.$index,scope.row)">  <i class="el-icon-document"></i> </span>
       </template>
     </el-table-column>
-    <el-table-column prop="datenumber" label="收到简历数" > </el-table-column>
+    <el-table-column prop="CreateTime" label="收到简历数" > </el-table-column>
       <el-table-column  label="已通过" >
         <template scope="scope">
           <el-button type="text"  @click="passmen(scope.row)">{{ scope.row.pass }}</el-button>
@@ -44,10 +44,12 @@
 </template>
  
 <script>
+import {getToken } from "../../api/api.js";
 export default{
 
   data(){
     return {
+      token:'',
         input:'',
         value:'全部',
         options:[
@@ -71,46 +73,38 @@ export default{
         },
         ],
        tableData:[
-	    {
-		name:"test",
-         editeFlag:false,
-         datenumber:20,
-         pass:10,
-         notpass:10,
-	    },
-	  	    {
-		name:"test",
-         editeFlag:false,
-         datenumber:20,
-         pass:10,
-         notpass:10,
-	    },
-	  	    {
-		name:"test",
-         editeFlag:false,
-         datenumber:20,
-         pass:10,
-         notpass:10,
-	    },
-	    	    {
-		name:"test",
-         editeFlag:false,
-         datenumber:20,
-         pass:10,
-         notpass:10,
-	    },
+	    
     ], 
       inputColumn1:""//第一列的输入框
     }
   },
+   //组件挂载完成，生命周期
+   mounted () {
+      this.token = JSON.parse(getToken("loginToken")); 
+      console.log(this.token);
+      this.getallproject()
+    },
   methods:{
+    //获取所有项目
+    getallproject:async function(){
+        let res=await this.$http({
+                  url:'/interviews',
+                  method:'get',
+                })
+                res=res.data.reverse()
+                res.forEach((e)=>{
+                  e.editeFlag=false
+                })
+                this.tableData=res
+        console.log(res);
+    },
     //查看通过的同学
     passmen:function(data){
       console.log(data);
     },
     //修改表格某一行的样式
       tableRowClassName:function({row, rowIndex}) {
-        if (rowIndex === 1) {
+        if (rowIndex === 0) {
           console.log(rowIndex);
           return 'success-row';
         }
@@ -125,17 +119,56 @@ export default{
 			        console.log(index);
 			        this.tableData[index].editeFlag=true;
 			    },
-    handleSave:function(index,row){
+    //修改项目名称
+    handleSave:async function(index,row){
                     console.log(row);
 			        //保存数据，向后台取数据
-			         this.tableData[index].editeFlag=false;
+     let res=await this.$http({
+                url:'/interviews/'+row.id,
+                method:'put',
+                data:{
+                  CreateTime:row.CreateTime,
+                  Name: row.Name
                 },
-    addproject:function(){
+                headers: {
+                  'Authorization': `Bearer ${this.token}`,
+              }
+              })
+      console.log(res);
+       if(res.status==200){
+          this.$message.success('修改项目成功')
+          this.getallproject()
+        }else{
+          this.$message.error('修改项目失败')
+        }
+			 this.tableData[index].editeFlag=false;
+                },
+    addproject:async function(){
         if(this.input==''){
             this.$message.error('项目名称不能为空')
         }
         console.log(this.input);
-        this.input=''
+        var time=new Date().getTime()
+        let res=await this.$http({
+          url:'/interviews',
+          method:'post',
+          data:{
+             CreateTime: time,
+              Name:this.input
+          },
+           headers: {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        })
+        console.log(res);
+        if(res.status==200){
+          this.$message.success('添加项目成功，默认为当前项目')
+          this.input=''
+          this.getallproject()
+        }else{
+          this.$message.error('添加项目失败')
+        }
+        
     }
 			    
   }

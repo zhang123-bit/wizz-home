@@ -11,6 +11,7 @@ import { Button, Card, DatePicker, Drawer,
   List,Table,Cascader,Modal,Upload,Collapse,Tooltip,Steps} from 'ant-design-vue'
 import App from '@/App'
 import router from '@/router'
+import { Loading } from 'element-ui';
 import moment from 'moment'
 import axios from 'axios'
 Vue.use(axios)
@@ -52,6 +53,17 @@ Vue.prototype.$http = axios
 console.log(Vue.prototype);
 export default Vue.prototype.$http
 
+/*request拦截器 添加一个请求拦截器  
+axios.interceptors.request.use(function (config) {
+  Loading.service({background: 'rgba(0, 0, 0, 0)'})
+	return config
+});
+response拦截器，用来处理加载图标
+axios.interceptors.response.use(function (response) {
+  let loading=Loading.service({background: 'rgba(0, 0, 0, 0)'})
+  loading.close()
+	return response;
+});*/
 axios.defaults.baseURL=process.env.API_PATH+'/api';//设置基址
 /* eslint-disable no-new */
  new Vue({

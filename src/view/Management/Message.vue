@@ -9,11 +9,11 @@
         label="#">
       </el-table-column>
       <el-table-column
-        prop="date"
+        prop="CreateTime"
         label="日期">
       </el-table-column>
       <el-table-column
-        prop="message"
+        prop="Content"
         label="信息内容">
       </el-table-column>
     <el-table-column fixed="right" label="操作" >
@@ -22,7 +22,7 @@
           type="text"
           size="small"
           @click="modity(scope.row, scope.$index)"
-          :disabled='scope.row.type==1'
+          :disabled='scope.row.ReadStatus==1'
         >标为已读</el-button>
       </template>
     </el-table-column>
@@ -30,34 +30,69 @@
     </div>
 </template>
 <script>
+import {getToken } from "../../api/api.js";
 export default {
       data() {
         return {
-          tableData: [{
-            date: '2016-05-02',
-            message: '王小虎',
-            type: 1
-          }, {
-            date: '2016-05-04',
-            message: '王小虎',
-            type: 0
-          }, {
-            date: '2016-05-01',
-            message: '王小虎',
-            type: 1
-          }, {
-            date: '2016-05-03',
-             message: '王小虎',
-            type: 1
-          }]
+          tableData: []
         }
       },
+      created () {
+        this.token = JSON.parse(getToken("loginToken")); 
+        this.getallmessage()
+      },
+      mounted () {},
+      inject:['changestatus'],
       methods: {
+        //时间戳转换
+        formdat:function(da){
+            da = new Date(da);
+            var year = da.getFullYear()+'年';
+            var month = da.getMonth()+1+'月';
+            var date = da.getDate()+'日';
+            return [year,month,date].join('-')
+        },
+        //获取所有的信息
+        getallmessage:async function(){
+         let res= await this.$http.get('/messages')
+         res=res.data
+         res.forEach((e)=>{
+            e.CreateTime=this.formdat(e.CreateTime)
+         })
+         let ReadStatus=res.every((e)=>{
+           return e.ReadStatus==1
+         })
+         if(ReadStatus){
+           this.changestatus()
+         }
+         console.log(ReadStatus);
+         this.tableData=res.reverse()
+         console.log(this.tableData);
+         
+        },
            change1:function(e){
             console.log(e);
         },
-          modity:function(){
-              console.log('123');
+          modity:async function(row){
+              console.log(row);
+          let res=await this.$http({
+          url:'/messages/'+row.id,
+          method:'put',
+          data:{
+            ReadStatus: 1,
+            CreateTime:row.CreateTime,
+            Content:row.Content
+            
+          },
+           headers: {
+            'Authorization': `Bearer ${this.token}`,
+        }
+        })
+        console.log(res);
+        if(res.status==200){
+          this.$message.success('消息已读')
+          this.getallmessage()
+        }
           }
       }
     }

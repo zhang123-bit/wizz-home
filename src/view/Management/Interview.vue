@@ -58,11 +58,11 @@
     <el-form-item label="姓名" :label-width="formLabelWidth" >
       <el-input v-model="form.name" autocomplete="off"></el-input>
     </el-form-item>
-        <el-form-item label="手机号" :label-width="formLabelWidth">
-      <el-input v-model="form.phonenumber" autocomplete="off"></el-input>
+        <el-form-item label="severchain id" :label-width="formLabelWidth">
+      <el-input v-model="form.severchanid" autocomplete="off"></el-input>
     </el-form-item>
-            <el-form-item label="github账号" :label-width="formLabelWidth">
-      <el-input v-model="form.githubnumber" autocomplete="off"></el-input>
+            <el-form-item label="webhook url" :label-width="formLabelWidth">
+      <el-input v-model="form.webhookurl" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item label="部门" :label-width="formLabelWidth">
       <el-select v-model="form.memberType" placeholder="请选择活动区域">

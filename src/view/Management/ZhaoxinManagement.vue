@@ -15,10 +15,12 @@
         <span slot="title">项目管理</span>
       </el-menu-item>
       <el-menu-item index="/management/detail/join/message">
-        <span slot="title">消息管理</span>
+      <el-badge is-dot class="item" v-if="ReadStatus"></el-badge>
+        <span slot="title" >消息管理</span>
+        
       </el-menu-item>
     </el-menu></el-aside>
-        <el-main>
+        <el-main >
             <router-view ref="mainPage"></router-view>
         </el-main>
         </el-container>
@@ -26,11 +28,33 @@
 <script>
 export default {
   created:function(){
+ 
+  },
+  provide(){
+    return {changestatus:this.changestatus}
+  },
+  mounted () {
+     this.getallmessage()
    this.$router.push({
           name: 'resume',
         })
   },
+  data () {
+    return {
+       ReadStatus:false,
+    }
+  },
      methods: {
+       changestatus:function(){
+         this.ReadStatus=false
+       },
+      getallmessage:async function(){
+         let res= await this.$http.get('/messages')
+         res=res.data
+         this.ReadStatus=res.some((e)=>{
+            return e.ReadStatus==0
+         })
+      },
       handleOpen(key, keyPath) {
         console.log(1);
         console.log(key, keyPath);
@@ -92,5 +116,9 @@ background-color: #324157 !important;
     color: #333;
     text-align: center;
     line-height: 25px !important;
+}
+.item {
+  margin-top: 10px;
+  margin-right: 3px;
 }
 </style>
