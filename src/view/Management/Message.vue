@@ -9,7 +9,7 @@
         label="#">
       </el-table-column>
       <el-table-column
-        prop="CreateTime"
+        prop="RealTime"
         label="日期">
       </el-table-column>
       <el-table-column
@@ -57,7 +57,7 @@ export default {
          let res= await this.$http.get('/messages')
          res=res.data
          res.forEach((e)=>{
-            e.CreateTime=this.formdat(e.CreateTime)
+            e.RealTime=this.formdat(e.CreateTime)
          })
          let ReadStatus=res.every((e)=>{
            return e.ReadStatus==1

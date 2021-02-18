@@ -31,13 +31,13 @@
       <span v-if="scope.row.editeFlag"  style="margin-left:10px;"  class="cell-icon"  @click="handleSave(scope.$index,scope.row)">  <i class="el-icon-document"></i> </span>
       </template>
     </el-table-column>
-    <el-table-column prop="CreateTime" label="收到简历数" > </el-table-column>
+    <el-table-column prop="SentNumber" label="收到简历数" > </el-table-column>
       <el-table-column  label="已通过" >
         <template scope="scope">
-          <el-button type="text"  @click="passmen(scope.row)">{{ scope.row.pass }}</el-button>
+          <el-button type="text"  @click="passmen(scope.row)">{{ scope.row.PassNumber}}</el-button>
           </template >
       </el-table-column>
-      <el-table-column prop="notpass" label="未通过"></el-table-column>
+      <el-table-column prop="FailNumber" label="未通过"></el-table-column>
   </el-table>
 </el-row >
   </div>
@@ -57,7 +57,7 @@ export default{
           value: '0',
           label: '全部'
           },
-                {
+               /* {
           value: '1',
           label: '前端'
         },       {
@@ -70,7 +70,7 @@ export default{
         }, {
           value: '4',
           label: '运营'
-        },
+        },*/
         ],
        tableData:[
 	    
