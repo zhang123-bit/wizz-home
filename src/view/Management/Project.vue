@@ -165,6 +165,9 @@ export default{
           this.$message.success('添加项目成功，默认为当前项目')
           this.input=''
           this.getallproject()
+          this.$router.push({
+          name: 'interview',
+        })
         }else{
           this.$message.error('添加项目失败')
         }

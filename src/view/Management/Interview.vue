@@ -274,10 +274,14 @@ export default {
                   console.log(res);
                 if(res.status==200){
                   this.getinterviewers(this.id)
-                }
-                this.dialogFormVisible=false
+                  this.dialogFormVisible=false
                 this.value3=''
                 this.value4=true
+                this.$message.success('添加面试官成功')
+                }else{
+                  this.$message.error('添加面试官失败')
+                }
+                
             }
             else{
                 console.log('编辑管理员');
@@ -305,11 +309,15 @@ export default {
                 console.log(res);
                 if(res.status==200){
                   this.getinterviewers(this.id)
-                }
-                this.dialogFormVisible=false
+                  this.dialogFormVisible=false
+                this.$message.success('修改面试官成功')
                 this.value3=''
                 this.value4=true
                  console.log(this.form);
+                }else{
+                    this.$message.error('修改面试官失败')
+                }
+                
             }
             
         }

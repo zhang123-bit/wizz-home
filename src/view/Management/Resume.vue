@@ -5,9 +5,9 @@
   <el-col :span="6"><el-select v-model="value1" placeholder="请选择项目" size="mini" @change="change1($event)">
     <el-option
       v-for="item in options1"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      :key="item.id"
+      :label="item.Name"
+      :value="item.id">
     </el-option>
   </el-select></el-col>
   <el-col :span="6"><el-select v-model="value2" placeholder="请选择岗位" size="mini" @change="change2($event)">
@@ -33,9 +33,9 @@
       :data="tableData"
       style="width: 100%">
        <el-table-column type="index" label="#"></el-table-column>
-      <el-table-column prop="date" label="投递时间" > </el-table-column>
+      <el-table-column prop="Time" label="投递时间" > </el-table-column>
       <el-table-column prop="name" label="姓名"> </el-table-column>
-      <el-table-column prop="address" label="面试官"></el-table-column>
+      <el-table-column prop="InterviewerName" label="面试官"></el-table-column>
        <el-table-column fixed="right" label="操作" >
       <template slot-scope="scope">
         <el-button
@@ -46,13 +46,23 @@
       </template>
     </el-table-column>
     </el-table>
+    <br>
+    <!-- 分页 -->
+    <el-pagination
+        background
+        layout="prev, pager, next"
+        :current-page="currentPage"
+        page-size="10"
+        @current-change="changepage"
+        :total="total">
+      </el-pagination>
     <!-- 这是信息模态框 -->
     <el-dialog
   title="个人信息及简历查看"
   :visible.sync="dialogVisible"
   width="30%"
   :before-close="handleClose">
- <span>个人介绍</span>
+ <span>{{name}}/{{age}}/{{grade}}</span>
     <el-divider></el-divider>
     <!-- 项目经历 -->
     <el-input
@@ -63,7 +73,7 @@
   v-model="textarea2">
 </el-input>
        <el-divider></el-divider>
-    <el-link type="primary" href="https://element.eleme.io" target="_blank">简历链接</el-link>
+    <el-link type="primary" :href='resumeurl' target="_blank" :disabled='resumeurl==""'>简历链接</el-link>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -72,30 +82,26 @@
 </div>
 </template>
 <script>
-
+import {getToken } from "../../api/api.js";
 export default {
+  created () {
+    this.token = JSON.parse(getToken("loginToken")); 
+    this.getallproject()
+  },
     data() {
       return {
-          textarea2:'刘守仁升任十七军分区副司令员兼四十八团团长后，仍经常随四十八团活动。当时，分区有四',
+        name:'',
+        age:'',
+        grade:'',
+        resumeurl:'',
+        Interviewers:[],
+          textarea2:'暂无项目经验',
           //查看面试者信息模态框
           dialogVisible: false,
-            tableData: [{
-                        date: '2016-05-02',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    }, {
-                        date: '2016-05-04',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1517 弄'
-                    }, {
-                        date: '2016-05-01',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1519 弄'
-                    }, {
-                        date: '2016-05-03',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1516 弄'
-                    }],
+          //面试简历总数
+          currentPage:1,//当前分页
+          total:100,
+            tableData: [],
         //选择筛选条件
         dataindex:{options1:null,options2:null,options3:null},
         options1: [
@@ -132,29 +138,94 @@ export default {
           label: '未通过'
         },],
         value1: '',
-        value2: '',
-        value3: '',
+        value2: '1',
+        value3: '0',
       }
     },
     methods: {
-          change1:function(e){
+       //时间戳转换
+        formdat:function(da){
+            da = new Date(da);
+            var year = da.getFullYear()+'年';
+            var month = da.getMonth()+1+'月';
+            var date = da.getDate()+'日';
+            return [year,month,date].join('-')
+        },
+      changepage:function(e){
+        console.log(e);
+        this.currentPage=e
+        this.getresume()
+      },
+      getresume:async function(){
+        let res=await this.$http({
+          url:'/resumes',
+          method:'get',
+           params: {
+                    DepartmentType: this.value2,
+                    InterviewId: this.value1,
+                    InterviewResult:this.value3,
+                    Page:this.currentPage
+                },
+        })
+        console.log(res);
+        if(res.status==200){
+          res=res.data
+          this.total=10*res.data.totalPages
+          this.tableData=res.data.content
+          if(this.tableData!=null){
+            this.tableData.forEach((e)=>{
+            e.Time=this.formdat(e.SendTime)
+          })
+          }
+        }
+      },
+      getallproject:async function(){
+        let res=await this.$http({
+                  url:'/interviews',
+                  method:'get',
+                })
+        if(res.status==200){
+          res=res.data.reverse()
+          this.options1=res
+          this.value1=res[0].id
+          this.getresume()
+          }
+      },
+        change1:function(e){
             console.log(e);
+            this.value1=e
+             this.currentPage=1
             this.dataindex.options1=e
+            this.getresume()
         },
         change2:function(e){
             console.log(e);
+             this.value2=e
+            this.currentPage=1
             this.dataindex.options2=e
+             this.getresume()
         },
           change3:function(e){
             console.log(e);
+            this.value3=e
+            this.currentPage=1
             this.dataindex.options3=e
+            this.getresume()
         },
+        
         //关闭信息模态框
          handleClose(done) {
        this.dialogVisible=false
+       this.resumeurl=''
+       this.textarea2='暂无项目经验'
       },
         showmessage:function(e){
          console.log(e);
+         this.name=e.name
+         this.age=e.age
+         this.grade=e.grade
+         this.textarea2=e.ProjectDescribe
+         this.resumeurl=e.FileUrl
          this.dialogVisible=true
         }
     }
@@ -162,6 +233,10 @@ export default {
 }
 </script>
 <style scoped>
+.el-pagination{
+  padding: 0 0;
+  text-align: right !important;
+}
 .el-row {
     margin-bottom: 20px;
     height: 20px;
@@ -186,5 +261,4 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
   }
-
 </style>

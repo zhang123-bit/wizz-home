@@ -1,7 +1,7 @@
 <template >
         <el-container class="body">
         <el-aside width="15%"> <el-menu
-      default-active="/management/detail/join/resume"
+      :default-active="$route.path"
       class="el-menu-vertical-demo menuside"
       @open="handleOpen"
       @close="handleClose" router>
