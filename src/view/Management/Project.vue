@@ -11,7 +11,16 @@
     </el-option>
   </el-select></el-col>
     <el-col :span="5"><el-input v-model="input" placeholder="请输入项目名称" size="mini"></el-input></el-col>
-  <el-col :span="3"><el-button type="primary" size="mini" @click="addproject()">添加项目</el-button></el-col>
+  <el-col :span="3">
+
+<el-popconfirm
+  title="确定添加吗？添加后项目会默认为当前项目哦"
+   @confirm='addproject()'
+>
+<el-button type="primary" slot="reference" size="mini">添加项目</el-button>
+</el-popconfirm>
+
+    </el-col>
 </el-row>
 <el-row>
   <el-table class='father'
@@ -146,8 +155,8 @@ export default{
     addproject:async function(){
         if(this.input==''){
             this.$message.error('项目名称不能为空')
-        }
-        console.log(this.input);
+        }else{
+  console.log(this.input);
         var time=new Date().getTime()
         let res=await this.$http({
           url:'/interviews',
@@ -173,6 +182,8 @@ export default{
         }
         
     }
+        }
+      
 			    
   }
 }

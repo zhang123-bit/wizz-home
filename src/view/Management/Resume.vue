@@ -34,7 +34,7 @@
       style="width: 100%">
        <el-table-column type="index" label="#"></el-table-column>
       <el-table-column prop="Time" label="投递时间" > </el-table-column>
-      <el-table-column prop="name" label="姓名"> </el-table-column>
+      <el-table-column prop="Name" label="姓名"> </el-table-column>
       <el-table-column prop="InterviewerName" label="面试官"></el-table-column>
        <el-table-column fixed="right" label="操作" >
       <template slot-scope="scope">
@@ -52,7 +52,7 @@
         background
         layout="prev, pager, next"
         :current-page="currentPage"
-        page-size="10"
+        page-size="6"
         @current-change="changepage"
         :total="total">
       </el-pagination>
@@ -62,13 +62,13 @@
   :visible.sync="dialogVisible"
   width="30%"
   :before-close="handleClose">
- <span>{{name}}/{{age}}/{{grade}}</span>
+ <span>{{Name}}/{{Age}}/{{Grade}}</span>
     <el-divider></el-divider>
     <!-- 项目经历 -->
     <el-input
   type="textarea"
   readonly="true"
-  :autosize="{ minRows: 1, maxRows: 10}"
+  :autosize="{ minRows: 5, maxRows: 10}"
   placeholder="请输入内容"
   v-model="textarea2">
 </el-input>
@@ -170,7 +170,7 @@ export default {
         console.log(res);
         if(res.status==200){
           res=res.data
-          this.total=10*res.data.totalPages
+          this.total=6*res.data.totalPages
           this.tableData=res.data.content
           if(this.tableData!=null){
             this.tableData.forEach((e)=>{
@@ -221,9 +221,9 @@ export default {
       },
         showmessage:function(e){
          console.log(e);
-         this.name=e.name
-         this.age=e.age
-         this.grade=e.grade
+         this.Name=e.Name
+         this.Age=e.Age
+         this.Grade=e.Grade
          this.textarea2=e.ProjectDescribe
          this.resumeurl=e.FileUrl
          this.dialogVisible=true

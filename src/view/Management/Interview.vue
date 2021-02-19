@@ -62,13 +62,13 @@
          
     </el-form-item>
         <el-form-item label="severchain id" :label-width="formLabelWidth">
-      <el-input v-model="form.ServerchanId" autocomplete="off"></el-input>
+      <el-input v-model="form.ServerchanId" autocomplete="off"  width='180px'></el-input>
     </el-form-item>
             <el-form-item label="webhook url" :label-width="formLabelWidth">
-      <el-input v-model="form.WebhookUrl" autocomplete="off"></el-input>
+      <el-input v-model="form.WebhookUrl" autocomplete="off" width='180px'></el-input>
     </el-form-item>
     <el-form-item label="部门" :label-width="formLabelWidth">
-      <el-select v-model="value3"  placeholder="请选则部门" @change='change3'>
+      <el-select v-model="value3"  placeholder="请选则部门" @change='change3' width='180px'>
         <el-option
       v-for="item in typenumber"
       :key="item.id"
@@ -332,4 +332,5 @@ export default {
 .el-form-item__label{
     text-align: center;
 }
+
 </style>
