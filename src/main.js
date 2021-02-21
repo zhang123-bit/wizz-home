@@ -14,6 +14,10 @@ import router from '@/router'
 import { Loading } from 'element-ui';
 import moment from 'moment'
 import axios from 'axios'
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
+Vue.use(Vant);
 Vue.use(axios)
 
 Vue.config.productionTip = false

@@ -64,7 +64,7 @@
   :before-close="handleClose">
  <span>{{Name}} / {{Gendr==1?'男':'女'}} / {{Grade}} / {{CollegeMajor}}</span>
     <el-divider></el-divider>
-    <!-- 项目经历 -->
+    <!-- 项目经历 --> 
     <h4>{{Experience==1?'项目经历介绍':'个人能力简介'}}</h4>
     <el-input
   type="textarea"

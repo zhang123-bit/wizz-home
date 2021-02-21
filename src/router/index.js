@@ -13,6 +13,11 @@ const routes = [
     redirect:'/homepage'
   },
   {
+    path: '/pass',
+    component: () =>
+      import(/* webpackChunkName:"pass" */ "common/Pass"),
+  },
+  {
     path: '/homepage',
     name: 'homepage',
     component: HomePage,

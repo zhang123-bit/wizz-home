@@ -23,6 +23,7 @@
     "nprogress": "^0.2.0",
     "qiniu": "^7.3.0",
     "reqwest": "^2.0.5",
+    "vant": "^2.12.6",
     "vue": "^2.5.2",
     "vue-axios": "^3.2.2",
     "vue-router": "^3.0.1"
