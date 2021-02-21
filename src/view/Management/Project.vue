@@ -15,6 +15,7 @@
 
 <el-popconfirm
   title="确定添加吗？添加后项目会默认为当前项目哦"
+  
    @confirm='addproject()'
 >
 <el-button type="primary" slot="reference" size="mini">添加项目</el-button>

@@ -62,9 +62,10 @@
   :visible.sync="dialogVisible"
   width="30%"
   :before-close="handleClose">
- <span>{{Name}}/{{Age}}/{{Grade}}</span>
+ <span>{{Name}} / {{Gendr==1?'男':'女'}} / {{Grade}} / {{CollegeMajor}}</span>
     <el-divider></el-divider>
     <!-- 项目经历 -->
+    <h4>{{Experience==1?'项目经历介绍':'个人能力简介'}}</h4>
     <el-input
   type="textarea"
   readonly="true"
@@ -90,9 +91,7 @@ export default {
   },
     data() {
       return {
-        name:'',
-        age:'',
-        grade:'',
+        Experience:'',
         resumeurl:'',
         Interviewers:[],
           textarea2:'暂无项目经验',
@@ -221,10 +220,12 @@ export default {
       },
         showmessage:function(e){
          console.log(e);
+         this.Experience=e.Experience
          this.Name=e.Name
-         this.Age=e.Age
+         this.Gendr=e.Gendr
+         this.CollegeMajor=e.CollegeMajor
          this.Grade=e.Grade
-         this.textarea2=e.ProjectDescribe
+         this.textarea2=e.Describe
          this.resumeurl=e.FileUrl
          this.dialogVisible=true
         }
