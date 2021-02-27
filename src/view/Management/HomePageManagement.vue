@@ -2,7 +2,7 @@
   <div>
       <!-- 轮播图上传部分 -->
     <el-row v-if="phone==false">
-            <el-col :span="3"><div class="main-text" >轮播图上传</div></el-col>
+            <el-col :span="4"><div class="main-text" >轮播图上传</div></el-col>
             <el-col :span="12"><div class="sub-text">(推荐上传比例为4:3，最多上传5张)</div></el-col>
      </el-row>
        <el-row v-if="phone==true">

@@ -28,7 +28,7 @@
        <el-table-column type="index" label="#"></el-table-column>
       <el-table-column prop="Name" label="姓名" > </el-table-column>
       <el-table-column prop="ServerchanId" label="severchan id"> </el-table-column>
-      <el-table-column prop="WebhookUrl" label="webhook url"></el-table-column>
+      <!-- <el-table-column prop="WebhookUrl" label="webhook url"></el-table-column> -->
      <el-table-column fixed="right" label="部门" >
       <template slot-scope="scope">
         <span v-if="scope.row.DepartmentType==1">前端</span>
@@ -45,12 +45,20 @@
           @click="modity(scope.row, scope.$index)"
           :disabled='nowprojectid!=id'
         >编辑</el-button>
-        <el-button
+        <el-popconfirm
+        @confirm="deleteone(scope.row, scope.$index)"
+  title="这是一段内容确定删除吗？"
+>
+   <el-button
+         slot="reference"
           type="text"
           size="small"
-          @click="deleteone(scope.row, scope.$index)"
+          
           :disabled='nowprojectid!=id'
         >删除</el-button>
+
+</el-popconfirm>
+     
       </template>
     </el-table-column>
     </el-table>
@@ -58,15 +66,15 @@
     <el-dialog title="面试官管理" :visible.sync="dialogFormVisible" class="father1" width="35%">
   <el-form :model="form" class="father2">
     <el-form-item label="姓名" :label-width="formLabelWidth" >
-      <el-input v-model="form.Name" autocomplete="off"> </el-input>
+      <el-input v-model="form.Name" autocomplete="off" > </el-input>
          
     </el-form-item>
         <el-form-item label="severchain id" :label-width="formLabelWidth">
-      <el-input v-model="form.ServerchanId" autocomplete="off"  width='180px'></el-input>
+      <el-input v-model="form.ServerchanId" autocomplete="off"   ></el-input>
     </el-form-item>
-            <el-form-item label="webhook url" :label-width="formLabelWidth">
-      <el-input v-model="form.WebhookUrl" autocomplete="off" width='180px'></el-input>
-    </el-form-item>
+             <!-- <el-form-item label="webhook url" :label-width="formLabelWidth">
+     <el-input v-model="form.WebhookUrl" autocomplete="off" width='180px'></el-input>
+    </el-form-item> -->
     <el-form-item label="部门" :label-width="formLabelWidth">
       <el-select v-model="value3"  placeholder="请选则部门" @change='change3' width='180px'>
         <el-option
@@ -135,11 +143,12 @@ export default {
         if(res.status==200){
           res=res.data.reverse()
           this.options1=res
-         
+         this.options1[0].Name= this.options1[0].Name+` (当前)`
            this.value1=res[0].Name
          console.log(this.options1);
          this.id=res[0].id
          this.nowprojectid=res[0].id
+         
          this.getinterviewers(res[0].id)
         }
                 
@@ -255,7 +264,8 @@ export default {
                   this.form.Status=1
                 }
                 console.log(this.form);
-                let res=await this.$http({
+                if(this.form.DepartmentType!=''&&this.form.Name!=''&&this.form.ServerchanId!=""){
+     let res=await this.$http({
                   url:'/interviewers',
                   method:'post',
                    data:{
@@ -281,6 +291,11 @@ export default {
                 }else{
                   this.$message.error('添加面试官失败')
                 }
+                }else{
+                   this.dialogFormVisible=false
+                  this.$message.error('所有输入为必填项目')
+                }
+           
                 
             }
             else{
@@ -332,5 +347,7 @@ export default {
 .el-form-item__label{
     text-align: center;
 }
-
+.father1 el-input__inner{
+  width: 100% !important;
+}
 </style>

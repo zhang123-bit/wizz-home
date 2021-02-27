@@ -77,10 +77,10 @@
                 </a-col>
                 <a-col :span='1'></a-col>
             </a-row>
-            <br><br>
+            <br v-if="phone==false"><br v-if="phone==false">
             <!-- vtalk和vread -->
             <el-row>
-            <el-col :span="12"><div class="introduction-text" >Vtalk</div></el-col>
+            <el-col :span="12" v-if="phone==false"><div class="introduction-text" >Vtalk</div></el-col>
             <el-col :span="12" v-if="phone==false"><div class="introduction-text">Vread</div></el-col>
             </el-row>
             <br>
@@ -103,14 +103,18 @@
                 </el-row>
                 <!-- 手机上面显示 -->
                  <el-row v-if="phone==true">
-                <el-col :span="16">  
+            
+           <el-row >
+            <el-col :span="24" v-if="phone==true"><br><div class="introduction-text">Vtalk</div></el-col>
+            </el-row>
+                     <el-col :span="16">  
                     <el-carousel height="40vw" indicator-position="none">
                         <el-carousel-item v-for="item in fileListvtalk" :key="item.uid" height="40vw">
                            <img :src='item.url'   class="itemimg" height="100%">
                         </el-carousel-item>
                         </el-carousel></el-col>
-                <el-col :span="8"><div class="grid-content introducetext1 phonev">{{vtalk}}</div></el-col>
             <el-row >
+                <el-col :span="8"> <div class="grid-content introducetext1 phonev">{{vtalk}}</div></el-col>
             <el-col :span="24" v-if="phone==true"><br><div class="introduction-text">Vread</div></el-col>
             </el-row>
                      <el-col :span="16">  
@@ -128,8 +132,18 @@
         <br>
         <div class="boldText">Vthink近期推文</div>
         <br><br>
-                <el-row :gutter="20">
+                <el-row :gutter="20" v-if="phone==false">
                 <el-col :span="6" v-for="item in articallist" :key="item.id">
+                    <a :href="item.articleUrl">
+                     <el-tooltip class="item" effect="dark" :content="item.articleUrl" placement="top">
+                        <div class="grid-content bg-purple-light artical" >{{item.title}}</div>
+                     </el-tooltip>  
+                    </a>
+                     </el-col>
+                </el-row>
+                <!-- 手机上的推文 -->
+                 <el-row :gutter="20" v-if="phone==true">
+                <el-col :span="12" v-for="item in articallist" :key="item.id">
                     <a :href="item.articleUrl">
                      <el-tooltip class="item" effect="dark" :content="item.articleUrl" placement="top">
                         <div class="grid-content bg-purple-light artical" >{{item.title}}</div>
@@ -370,8 +384,8 @@ export default {
     },
     data :function() {
         return {
-            vtalk:'《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏',
-            vread:'《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、）',
+            vtalk:'《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏,《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏',
+            vread:'《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏,《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏',
             fileListvtalk:[],
             fileListlunbo:[],
             fileListvread:[],

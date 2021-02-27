@@ -81,8 +81,8 @@ export default {
           data:{
             ReadStatus: 1,
             CreateTime:row.CreateTime,
-            Content:row.Content
-            
+            Content:row.Content,
+            ResumeId:row.ResumeId,
           },
            headers: {
             'Authorization': `Bearer ${this.token}`,

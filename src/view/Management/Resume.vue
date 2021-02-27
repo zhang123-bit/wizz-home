@@ -186,6 +186,7 @@ export default {
         if(res.status==200){
           res=res.data.reverse()
           this.options1=res
+          this.options1[0].Name= this.options1[0].Name+` (当前)`
           this.value1=res[0].id
           this.getresume()
           }

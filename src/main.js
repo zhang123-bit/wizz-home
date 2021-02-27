@@ -56,14 +56,20 @@ Vue.prototype.$moment = moment;
 Vue.prototype.$http = axios
 console.log(Vue.prototype);
 export default Vue.prototype.$http
-
+var timeout=null
 //request拦截器 添加一个请求拦截器  
 axios.interceptors.request.use(function (config) {
   Loading.service({background: 'rgba(0, 0, 0, 0)'})
+  clearTimeout(timeout)
+  timeout=setTimeout(()=>{
+    let loading=Loading.service({background: 'rgba(0, 0, 0, 0)'})
+  loading.close()
+  },3000)
 	return config
 });
 //response拦截器，用来处理加载图标
 axios.interceptors.response.use(function (response) {
+  clearTimeout(timeout)
   let loading=Loading.service({background: 'rgba(0, 0, 0, 0)'})
   loading.close()
 	return response;
