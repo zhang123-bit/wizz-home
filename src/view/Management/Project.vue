@@ -14,7 +14,7 @@
   <el-col :span="3">
 
 <el-popconfirm
-  title="确定添加吗？添加后项目会默认为当前项目哦"
+  title="确认新建项目吗？将会自动成为新项目，当前的项目将会被终止"
   
    @confirm='addproject()'
 >
@@ -106,32 +106,27 @@ export default{
                   e.editeFlag=false
                 })
                 this.tableData=res
-        console.log(res);
     },
     //查看通过的同学
     passmen:function(data){
       console.log(data);
+      this.$router.push({name:'resume',query:{id:data.id}})
     },
     //修改表格某一行的样式
       tableRowClassName:function({row, rowIndex}) {
         if (rowIndex === 0) {
-          console.log(rowIndex);
           return 'success-row';
         }
         return '';
       },
     change:function(e){
-            console.log(e);
         },
      handleEdit:function(index,row){
 			        //遍历数组改变editeFlag
-			        console.log(row)
-			        console.log(index);
 			        this.tableData[index].editeFlag=true;
 			    },
     //修改项目名称
     handleSave:async function(index,row){
-                    console.log(row);
 			        //保存数据，向后台取数据
      let res=await this.$http({
                 url:'/interviews/'+row.id,
@@ -144,7 +139,6 @@ export default{
                   'Authorization': `Bearer ${this.token}`,
               }
               })
-      console.log(res);
        if(res.status==200){
           this.$message.success('修改项目成功')
           this.getallproject()
@@ -177,6 +171,7 @@ export default{
           this.getallproject()
           this.$router.push({
           name: 'interview',
+          query:{isroute:true}
         })
         }else{
           this.$message.error('添加项目失败')

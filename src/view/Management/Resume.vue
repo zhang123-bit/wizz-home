@@ -29,6 +29,7 @@
 </el-row>
     <el-table
     :header-cell-style="{textAlign: 'center'}"   :cell-style="{ textAlign: 'center' }"
+    :row-style="{height:'20px'}"
        stripe
       :data="tableData"
       style="width: 100%">
@@ -49,6 +50,7 @@
     <br>
     <!-- 分页 -->
     <el-pagination
+        small
         background
         layout="prev, pager, next"
         :current-page="currentPage"
@@ -62,6 +64,16 @@
   :visible.sync="dialogVisible"
   width="30%"
   :before-close="handleClose">
+  <h4 v-if='value3==1'>面试评价</h4>
+    <el-input
+    v-if='value3==1'
+  type="textarea"
+  readonly="true"
+  :autosize="{ minRows: 3, maxRows: 10}"
+  placeholder="暂无面试评价"
+  v-model="textarea3">
+</el-input>
+  <el-divider v-if='value3==1'></el-divider>
  <span>{{Name}} / {{Gendr==1?'男':'女'}} / {{Grade}} / {{CollegeMajor}}</span>
     <el-divider></el-divider>
     <!-- 项目经历 --> 
@@ -87,13 +99,14 @@ import {getToken } from "../../api/api.js";
 export default {
   created () {
     this.token = JSON.parse(getToken("loginToken")); 
-    this.getallproject()
+     this.getallproject() 
   },
     data() {
       return {
         Experience:'',
         resumeurl:'',
         Interviewers:[],
+        textarea3:'暂无面试评价',
           textarea2:'暂无项目经验',
           //查看面试者信息模态框
           dialogVisible: false,
@@ -169,7 +182,7 @@ export default {
         console.log(res);
         if(res.status==200){
           res=res.data
-          this.total=6*res.data.totalPages
+          this.total=res.data.totalSize
           this.tableData=res.data.content
           if(this.tableData!=null){
             this.tableData.forEach((e)=>{
@@ -188,6 +201,11 @@ export default {
           this.options1=res
           this.options1[0].Name= this.options1[0].Name+` (当前)`
           this.value1=res[0].id
+          if(this.$route.query.id){
+            console.log(this.$route.query.id);
+            this.value1=this.$route.query.id
+            this.value3='1'
+          }
           this.getresume()
           }
       },
@@ -227,6 +245,7 @@ export default {
          this.CollegeMajor=e.CollegeMajor
          this.Grade=e.Grade
          this.textarea2=e.Describe
+         this.textarea3=e.InterviewEvaluation
          this.resumeurl=e.FileUrl
          this.dialogVisible=true
         }

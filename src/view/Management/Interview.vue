@@ -53,7 +53,6 @@
          slot="reference"
           type="text"
           size="small"
-          
           :disabled='nowprojectid!=id'
         >删除</el-button>
 
@@ -101,8 +100,20 @@
 import {getToken } from "../../api/api.js";
 export default {
    created () {
+       
         this.token = JSON.parse(getToken("loginToken")); 
         this.getallproject()
+        if(this.$route.query.isroute){
+          this.$alert('项目新建成功，请尽快为当前项目添加面试官', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+        }
       },
     data () {
         return {
