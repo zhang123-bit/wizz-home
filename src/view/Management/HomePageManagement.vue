@@ -98,7 +98,7 @@
             <el-col :span="8"><div class="main-text" >为之介绍修改</div></el-col>
             <el-col :span="9"><el-button type="text" @click="modifyintroduce" class="phonebutton-text"> (确认修改)</el-button></el-col>
      </el-row>
-     <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea" class="textareaclass">
+     <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 10}" placeholder="请输入内容" v-model="textarea" class="textareaclass">
 </el-input>
     <br>
    <!-- 公众号文章上传修改-->

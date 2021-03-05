@@ -176,16 +176,28 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next)=>{
+  let token=localStorage.getItem('loginToken')
   if(to!==from) {
     NProgress.start();
   }
+  if(!token&&to.fullPath.split('/')==='management'){
+    next({path: '/management/login'})
+  }
+  else if(token && to.path =='/management/login') {
+    next({path: '/management/detail/homepage'});
+  }else{
+    next()
+  }
+  console.log(to.fullPath.split('/')[1]);
   const record = findLast(to.matched, record => record.meta.requireAuth);
   if(record) {
-    if(!getToken('loginToken') && to.path !=='/management/login') {
+    /*if(!token && to.path !=='/management/login') {
       next({path: '/management/login'});
-    } else if(getToken('loginToken') && to.path =='/management/login') {
+    } else if(token && to.path =='/management/login') {
       next({path: '/management/detail/story'});
-    }
+    }else{
+      next()
+    }*/
     NProgress.done();
   }
   next();

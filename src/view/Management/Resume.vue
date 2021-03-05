@@ -44,6 +44,20 @@
           size="small"
           @click="showmessage(scope.row, scope.$index)"
         >查看简历</el-button>
+        <!-- 修改状态 -->
+        <el-popconfirm
+         v-if='value3!="0"'
+        title="确认修改状态吗？"
+        @confirm="changemessage(scope.row)"
+            >
+            <el-button
+                   
+                    type="text"
+                    size="small"
+                    slot="reference"
+                    >修改状态</el-button>
+            </el-popconfirm>
+        
       </template>
     </el-table-column>
     </el-table>
@@ -163,6 +177,43 @@ export default {
             var date = da.getDate()+'日';
             return [year,month,date].join('-')
         },
+      changemessage: async function(e){
+        console.log(e);
+         let res=await this.$http({
+                  url:'/resumes/'+e.id,
+                  method:'put',
+                   data:{
+                     CollegeMajor: e.CollegeMajor,
+                      DepartmentType: e.DepartmentType,
+                      Describe: e.Describe,
+                      Experience: e.Experience,
+                      FileUrl: e.FileUrl,
+                      Gender:e.Gender,
+                      Grade: e.Grade,
+                      InitialScreeningResult: e.InitialScreeningResult,
+                      InitialScreeningTime: e.InitialScreeningTime,
+                      InterviewEvaluation: e.InterviewEvaluation,
+                      InterviewId:e.InterviewId,
+                      InterviewTime: e.InterviewTime,
+                      InterviewerId: e.InterviewerId,
+                      Name: e.Name,
+                      QQNumber: e.QQNumber,
+                      SendTime: e.SendTime,
+                      TelephoneNumber: e.TelephoneNumber,
+                      WechatNumber: e.WechatNumber,
+                      InterviewResult: e.InterviewResult==1?2:1
+                        },
+                headers: {
+                  'Authorization': `Bearer ${this.token}`,
+              }
+                })
+              if(res.status==200){
+                this.$message.success('修改面试结果成功')
+                this.getresume()
+              }else{
+                 this.$message.error('修改面试结果失败')
+              }
+      },
       changepage:function(e){
         console.log(e);
         this.currentPage=e

@@ -24,8 +24,13 @@
                     <div class="centerText">为之冬/夏令营</div>
                 </a-col>
             </a-row>
+            <el-row>
+            <el-col :span="24"><div class="connect1-text" >投递简历 
+                <el-link :underline="false" href='https://www.wjx.top/vj/mG4XHZa.aspx' type="primary"> (点此投递简历)</el-link>
+                </div></el-col>
+           </el-row>
         </div>
-        <div ref="profile">
+       <!-- <div ref="profile">
             <a-row  type="flex" justify="space-around">
                 <a-col :xs="10" :sm="10" :md="8" :lg="8" :xl="8">
                     <img src="../assets/img/Connection/ConnectWei.jpg" alt="简历投递">
@@ -33,8 +38,8 @@
                 </a-col>
             </a-row>
             <img src="../assets/img/back5.jpg" alt="简历投递">
-        </div>
-       
+        </div> -->
+  
     </div>
 </template>
 
@@ -59,6 +64,13 @@ export default {
 .connect-text{
     height: 50px;
     padding-left: 10%;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 50px;
+}
+.connect1-text{
+    height: 50px;
+    padding-left: 5%;
     font-weight: 700;
     font-size: 20px;
     line-height: 50px;

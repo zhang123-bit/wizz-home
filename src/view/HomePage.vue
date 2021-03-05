@@ -206,7 +206,7 @@
         <!-- 成员去向部分 -->
         <div ref="member">
             <br><br><br>
-            <div class="boldText">为之成员</div>
+            <div class="boldText">成员去向</div>
             <div class="backGround3">
             <a-row>
                 <a-col :xs="0" :sm="0" :md="3" :lg="3" :xl="3"></a-col>
@@ -384,8 +384,15 @@ export default {
     },
     data :function() {
         return {
-            vtalk:'《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏,《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏',
-            vread:'《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏,《反恐精英：全球攻势》是一款由VALVE与Hidden Path Entertainment合作开发、Valve Software发行的第一人称射击游戏',
+            vtalk:`致力于打造高质量的人脉圈子！
+                    定期邀请嘉宾做分享会，分享和讨论行业见解和行业干货，分享会后在公众号进行干货产出。
+                    无论是听众还是嘉宾都会受益匪浅！
+                    欢迎带你的小伙伴来一起听哦~
+                    一起与大佬面对面交流！`,
+            vread:`致力于打造轻压力弱链接的读书与交流氛围。
+                    轻松活泼的交流圈子，高质量的讨论社群，
+                    在这里，不止read书，而是我们read到的一切资讯，都可以一起讨论和交流！
+                    一起享受思维火花的碰撞！`,
             fileListvtalk:[],
             fileListlunbo:[],
             fileListvread:[],

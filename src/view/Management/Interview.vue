@@ -75,7 +75,7 @@
      <el-input v-model="form.WebhookUrl" autocomplete="off" width='180px'></el-input>
     </el-form-item> -->
     <el-form-item label="部门" :label-width="formLabelWidth">
-      <el-select v-model="value3"  placeholder="请选则部门" @change='change3' width='180px'>
+      <el-select v-model="value3"  placeholder="请选择部门" @change='change3' width='180px'>
         <el-option
       v-for="item in typenumber"
       :key="item.id"

@@ -81,7 +81,8 @@ export default {
           }
           console.log(res.data);
           this.name=res.data.Name
-          if(res.data.InterviewResult==1||2){
+          if(res.data.InterviewResult!=0){
+              console.log('a');
               this.isclick=false
           }
       },
