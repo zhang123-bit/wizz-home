@@ -180,6 +180,7 @@ router.beforeEach((to, from, next)=>{
   if(to!==from) {
     NProgress.start();
   }
+  
   if(!token&&to.fullPath.split('/')==='management'){
     next({path: '/management/login'})
   }

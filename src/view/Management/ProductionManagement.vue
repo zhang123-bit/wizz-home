@@ -224,7 +224,7 @@ export default {
     })
     getDomain().then(res=>{
       if(res.status == 200) {
-        this.urlHost = `https://${res.data.domain}/`;
+        this.urlHost = `${res.data.domain}/`;
         if(res.data.place == "华东") {
           this.uploadHost = "//upload.qiniup.com/"
         } else if(res.data.place == "华北") {
@@ -464,6 +464,7 @@ export default {
         if (file.response) {
           file.url = file.thumbUrl = `${this.urlHost}${file.response.key}`;
         }
+        console.log(file);
         return file;
       })
     },
